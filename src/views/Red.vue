@@ -1,5 +1,5 @@
 <template>
-  <page color='green'/>
+  <page color='red'/>
 </template>
 
 <script>

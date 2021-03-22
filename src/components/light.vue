@@ -2,8 +2,10 @@
   <div class="container">
     <div
       class="light"
-      :class="{ green: isGreen, yellow: isYellow, red: isRed, active: active}"
-    ></div>
+      :class="{ green: isGreen, yellow: isYellow, red: isRed, active: active, blink: isBlink()}"
+      :data-time="time"
+    >
+    </div>
   </div>
 </template>
 
@@ -18,13 +20,17 @@ export default {
     active: {
       type: Boolean,
       default: false
+    },
+    time: {
+      type: Number,
+      require: false
     }
   },
   data: function () {
     return {
       isGreen: false,
       isYellow: false,
-      isRed: false,
+      isRed: false
     };
   },
   mounted() {
@@ -32,6 +38,11 @@ export default {
     this.isYellow = this.color == "yellow";
     this.isRed = this.color == "red";
   },
+  methods: {
+    isBlink() {
+      return this.time <= this.$store.state.blink
+    }
+  }
 };
 </script>
 
@@ -51,6 +62,17 @@ export default {
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid black;
+  text-align: center;
+  color: black
+}
+.light::after{
+  display: block;
+  font-family: monospace;
+  font-size: 10vh;
+  font-weight: bold;
+  content: attr(data-time);
+  margin-top: 50%;
+  transform: translateY(-50%)
 }
 .green {
   background-color: rgba(0, 255, 0, .2);
@@ -73,5 +95,16 @@ export default {
   background-color: red;
   box-shadow: 0 0 30px red;
 }
-
+.blink {
+  animation-name: blink;
+  animation-timing-function: linear;
+  animation-duration: .7s;
+  animation-iteration-count: infinite; 
+}
+@keyframes blink {
+  50% {
+    background-color: rgba(0, 0, 0, .3);
+    box-shadow: 0 0 0px rgb(0, 0, 0);
+  }
+}
 </style>

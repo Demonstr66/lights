@@ -5,6 +5,14 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+let data = localStorage.getItem('state')
+if (data) {
+  data = JSON.parse(data)
+  store.commit('setCurrentColor', data.color)
+  store.commit('setPrevColor', data.prevColor)
+  store.commit('setRestTime', data.restTime)
+}
+
 new Vue({
   router,
   store,
